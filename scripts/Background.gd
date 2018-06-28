@@ -1,15 +1,22 @@
 extends Node2D
 
-# class member variables go here, for example:
-# var a = 2
-# var b = "textvar"
+const MOVE_SPEED = 350
+const OFFSET = 64
+
+onready var top = $TopBackground
+onready var bottom = $BottomBackground
+
+var top_position
+var bottom_position
 
 func _ready():
-	# Called when the node is added to the scene for the first time.
-	# Initialization here
-	pass
+	top_position = top.position.y
+	bottom_position = get_viewport_rect().size.y
 
-#func _process(delta):
-#	# Called every frame. Delta is time since last frame.
-#	# Update game logic here.
-#	pass
+func _process(delta):
+	top.position.y += MOVE_SPEED * delta
+	bottom.position.y += MOVE_SPEED * delta
+	if top.position.y >= bottom_position + OFFSET:
+		top.position.y = top_position
+	elif bottom.position.y >= bottom_position + OFFSET:
+		bottom.position.y = top_position
