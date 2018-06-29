@@ -33,3 +33,6 @@ func _process(delta):
 func _on_Timer_timeout():
 	can_shoot = true
 	timer.stop()
+	
+func add_damage(damage):
+	pass
