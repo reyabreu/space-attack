@@ -8,6 +8,9 @@
 z_index = -10
 script = ExtResource( 1 )
 _sections_unfolded = [ "Z Index" ]
+__meta__ = {
+"_edit_group_": true
+}
 
 [node name="BottomBackground" type="Node2D" parent="." index="0"]
 
