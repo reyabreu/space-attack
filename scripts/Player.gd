@@ -11,6 +11,9 @@ onready var shoot_timer = $ShootTimer
 onready var cannon_position = $CannonPosition
 onready var collision_shape = $CollisionShape2D
 onready var restart_timer = $RestartTimer
+onready var audio = $Audio
+
+signal player_hit
 
 var screen_width
 var player_deadband
@@ -21,8 +24,6 @@ func _ready():
 	player_deadband = (sprite.texture.get_width() * scale.x) / 2 + OFFSET
 
 func _process(delta):
-	if not is_visible_in_tree():
-		return
 	if Input.is_action_pressed("player_left"):
 		position.x -= SPEED * delta
 	elif Input.is_action_pressed("player_right"):
@@ -34,6 +35,7 @@ func _process(delta):
 		get_parent().add_child(new_projectile)
 		can_shoot = false;
 		shoot_timer.start()
+		audio.play()
 		print("projectile [%d] at pos: %s" % [new_projectile.get_instance_id(), new_projectile.position])
 		
 	position.x = clamp(position.x, player_deadband, screen_width - player_deadband)
@@ -44,12 +46,12 @@ func _on_Timer_timeout():
 	
 func add_damage(damage):
 	health -= damage
+	emit_signal("player_hit")
 	if health <= 0:
 		collision_shape.disabled = true
 		hide()
+		set_process(false)
 		restart_timer.start()
 
 func _on_RestartTimer_timeout():
-	health = 20
-	show()
-	collision_shape.disabled = false
+	get_tree().reload_current_scene()

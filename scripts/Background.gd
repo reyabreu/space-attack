@@ -18,5 +18,5 @@ func _process(delta):
 	bottom.position.y += MOVE_SPEED * delta
 	if top.position.y >= bottom_position + OFFSET:
 		top.position.y = top_position
-	elif bottom.position.y >= bottom_position + OFFSET:
+	if bottom.position.y >= bottom_position + OFFSET:
 		bottom.position.y = top_position
